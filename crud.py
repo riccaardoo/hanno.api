@@ -81,13 +81,15 @@ def dados_empresa():
    return jsonify (inform)
 
 
-    #ENDOINTS PRECRICOES
+
+
+        #ENDOINTS PRECRICOES
  
 #GET
 #retorno prescricoes
 
 @app.route('/inform/prescricoes', methods = ['GET'])
-def buscar_prescricoes():
+def info_prescricoes():
     return jsonify(inform["prescricoes"])
 
 
@@ -96,30 +98,49 @@ def buscar_prescricoes():
 
 @app.route('/inform/prescricoes/<int:id>', methods=['PUT'])
 def atualizar_prescricao(id):
-        alte_prescricao = request.get_json()
+        alter_prescricao = request.get_json()
         for prescricao in inform["prescricoes"]:
             if prescricao.get('id') == id:
-                prescricao.update(alte_prescricao)
+                prescricao.update(alter_prescricao)
                 return jsonify(prescricao)
      
+
 #CREATE
 #adicionando nova prescricao
 
-#@app.route('/inform/prescricoes', methods=['POST'])
-#def nova_prescricao():
-  #  nova_prescricao = request.get_json()  # Capturando os dados da nova prescrição
-   # nova_prescricao["id"] = len(inform["prescricoes"]) + 1  # Gerando um ID único para a nova prescrição
-    #inform["prescricoes"].append(nova_prescricao)  # Adicionando a nova prescrição à lista
-    #return jsonify(nova_prescricao) # Retornando a nova prescrição com o status de criado
+@app.route('/inform/prescricoes', methods=['POST'])
+def nova_prescricao():
+    nova_prescricao = request.get_json()  # Capturando os dados da nova prescrição
+    nova_prescricao["id"] = len(inform["prescricoes"]) + 1  # Gerando um ID único para a nova prescrição
+    inform["prescricoes"].append(nova_prescricao)  # Adicionando a nova prescrição à lista
+    return jsonify(nova_prescricao) # Retornando a nova prescrição com o status de criado
 
 
-    #ENPOINTS RELATORIOS_PACIENTES
+#DELETE
+#excluindo prescrição
+
+@app.route('/inform/prescricoes/<int:id>', methods=['DELETE'])
+def remover_prescricao(id):
+    for prescricao in inform["prescricoes"]:
+        if prescricao.get('id') == id:
+            inform["prescricoes"].remove(prescricao)
+            return jsonify(inform["prescricoes"])
+     
+
+
+
+
+
+
+
+
+        #ENPOINTS RELATORIOS_PACIENTES
 
 
 #GET
 #Retorno relatorios_pacientes
 
-@app.route('/inform/relatorios')
+@app.route('/inform/relatorios', methods =['GET'])
 def info_relatorios():
     return jsonify(inform["relatorios_pacientes"])
 
@@ -127,16 +148,125 @@ def info_relatorios():
 #UPDATE
 #atualizando relatorios_pacientes
 
+@app.route('/inform/relatorios/<int:id>', methods=['PUT'])
+def atualizar_relatorios(id):
+    alter_relatoriso = request.get_json()
+    for relatorio in inform["relatorios_pacientes"]:
+        if relatorio.get('id') == id:
+            relatorio.update(alter_relatoriso)
+            return jsonify (relatorio)
+
 
 # CREATE
 #adicionando um novo relaório 
 
-#@app.route('/inform/relatorios', methods = ['POST'])
-#def adc_relatorio():
- #   novo_relatorio = request.get_json()
-  #  inform["relatorios_pacientes"].append(novo_relatorio)
-   # return jsonify(inform["relatorios_pacientes"])
+@app.route('/inform/relatorios', methods = ['POST'])
+def adc_relatorio():
+    novo_relatorio = request.get_json()
+    inform["relatorios_pacientes"].append(novo_relatorio)
+    return jsonify(inform["relatorios_pacientes"])
 
+
+#DELETE
+# excluindo relatorio
+
+@app.route('/inform/relatorios/<int:id>', methods=['DELETE'])
+def remover_relatorio(id):
+    for relatorio in inform["relatorios_pacientes"]:
+        if relatorio.get('id') == id:
+            inform["relatorios_pacientes"].remove(relatorio)
+            return jsonify(inform["relatorios_pacientes"])
+
+
+
+
+
+
+        #ENDPOINT PESQUISAS CLINICAS
+
+#GET
+# retornando pesquisas clinicas
+
+@app.route('/inform/pesquisas', methods = ['GET']) 
+def info_pesquisas():
+    return jsonify(inform["pesquisas_clinicas"])  
+
+
+#PUT
+# atualizando pesquisas clinicas
+
+@app.route('/inform/pesquisas/<int:id>',  methods = ['PUT'])
+def atualizar_pesquisas(id):
+    alter_pesquisa = request.get_json()
+    for pesquisa in inform["pesquisas_clinicas"]:
+        pesquisa.get('id') == id
+        pesquisa.update(alter_pesquisa)
+        return jsonify (pesquisa)
+    
+
+#CREATE
+# criando nova pesquisa clinica   
+
+@app.route('/inform/pesquisas', methods = ['POST'])
+def adc_pesquisa():
+    nova_pesquisa = request.get_json()
+    inform["pesquisas_clinicas"].append(nova_pesquisa)
+    return jsonify(inform["pesquisas_clinicas"])
+
+
+#DELETE
+# excluindo pesquisas clinicas
+
+@app.route('/inform/pesquisas/<int:id>', methods=['DELETE'])
+def remover_pesquisa(id):
+    for pesquisa in inform["pesquisas_clinicas"]:
+        if pesquisa.get('id') == id:
+            inform["pesquisas_clinicas"].remove(pesquisa)
+            return jsonify(inform["pesquisas_clinicas"])
+    
+        #ENPOINTS DIAGNÓSTICOS
+
+#GET
+# retornando diagnósticos 
+
+@app.route('/inform/diagnosticos', methods = ['GET'])  
+def info_diagnosticos():
+    return jsonify(inform["diagnosticos"])     
+
+
+#PUT
+# atualizando diagnósticos 
+
+@app.route('/inform/diagnosticos/<int:id>', methods = ['PUT'])
+def atualizando_diagnostico(id):
+    alter_diagnostico = request.get_json()
+    for diag in inform["diagnosticos"]:
+        if diag.get('id') == id:
+            diag.update(alter_diagnostico)
+            return jsonify(diag)
+        
+
+#CREATE
+# criando um novo diagnostico
+
+@app.route('/inform/diagnosticos', methods = ['POST'])
+def adc_diagnostico():
+    novo_diagnostico = request.get_json()
+    inform["diagnosticos"].append(novo_diagnostico)
+    return jsonify (inform["diagnosticos"])
+    
+
+#DELETE
+# excluindo diagnóstico
+
+@app.route('/inform/diagnosticos/<int:id>', methods=['DELETE'])
+def remover_diagnostico(id):
+    for diag in inform["diagnosticos"]:
+        if diag.get('id') == id:
+            inform["diagnosticos"].remove(diag)
+            return jsonify(inform["diagnosticos"])
 
 app.run(port= 5000, host= 'localhost', debug= True)
+
+
     
